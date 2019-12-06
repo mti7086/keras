@@ -1,3 +1,6 @@
+# 문제: x1과 x2를 병합하여 (100,6)만들기
+# https://docs.scipy.org/doc/numpy/reference/generated/numpy.concatenate.html
+
 # import keras # keras 가져오겠다.
 # import tensorflow
 
@@ -52,62 +55,57 @@ from keras.layers import Dense, Input
 # model = Sequential() # 순차적모델
 
 input1 = Input(shape=(3, )) # 최초의 input/ 컬럼 = 열 = 1개
-dense1 = Dense(5, activation='relu')(input1) # dense1 layer/ input: 1, ouput:5
-dense2 = Dense(3)(dense1) # dense2 layer/ input: 5, ouput:3
-dense3 = Dense(4)(dense2) # dense3 layer/ input: 3, ouput:4
-dense4 = Dense(6)(dense3)
-dense5 = Dense(3)(dense4)
-dense6 = Dense(7)(dense5)
-dense7 = Dense(2)(dense6)
-dense8 = Dense(3)(dense7)
-dense9 = Dense(4)(dense8)
-dense10 = Dense(10)(dense9)
-dense11 = Dense(2)(dense10)
-dense12 = Dense(7)(dense11)
-dense13 = Dense(3)(dense12)
-dense14 = Dense(12)(dense13)
-dense15 = Dense(3)(dense14)
-dense16 = Dense(7)(dense15)
+x1 = Dense(5, activation='relu')(input1) # dense1 layer/ input: 1, ouput:5
+x1 = Dense(3)(x1) # dense2 layer/ input: 5, ouput:3
+x1 = Dense(4)(x1) # dense3 layer/ input: 3, ouput:4
+x1 = Dense(6)(x1)
+x1 = Dense(3)(x1)
+x1 = Dense(7)(x1)
+x1 = Dense(2)(x1)
+x1 = Dense(3)(x1)
+x1 = Dense(4)(x1)
+x1 = Dense(10)(x1)
+x1 = Dense(2)(x1)
+x1 = Dense(7)(x1)
+x1 = Dense(3)(x1)
+x1 = Dense(12)(x1)
+x1 = Dense(3)(x1)
+x1 = Dense(7)(x1)
 
-middle1 = Dense(3)(dense16)
+middle1 = Dense(3)(x1)
 
 input2 = Input(shape=(3, )) # 최초의 input/ 컬럼 = 열 = 1개
-xx = Dense(5, activation='relu')(input2) # dense1 layer/ input: 1, ouput:5
-xx = Dense(3)(xx) # dense2 layer/ input: 5, ouput:3
-xx = Dense(4)(xx) # dense3 layer/ input: 3, ouput:4
-xx = Dense(6)(xx)
-xx = Dense(3)(xx)
-xx = Dense(7)(xx)
-xx = Dense(2)(xx)
-xx = Dense(3)(xx)
-xx = Dense(4)(xx)
-xx = Dense(10)(xx)
-xx = Dense(2)(xx)
-xx = Dense(7)(xx)
-xx = Dense(3)(xx)
-xx = Dense(12)(xx)
-xx = Dense(3)(xx)
-xx = Dense(7)(xx)
+x2 = Dense(5, activation='relu')(input2) # dense1 layer/ input: 1, ouput:5
+x2 = Dense(3)(x2) # dense2 layer/ input: 5, ouput:3
+x2 = Dense(4)(x2) # dense3 layer/ input: 3, ouput:4
+x2 = Dense(6)(x2)
+x2 = Dense(3)(x2)
+x2 = Dense(7)(x2)
+x2 = Dense(2)(x2)
+x2 = Dense(3)(x2)
+x2 = Dense(4)(x2)
+x2 = Dense(10)(x2)
+x2 = Dense(2)(x2)
+x2 = Dense(7)(x2)
+x2 = Dense(3)(x2)
+x2 = Dense(12)(x2)
+x2 = Dense(3)(x2)
+x2 = Dense(7)(x2)
 
-middle2 = Dense(3)(xx) 
+middle2 = Dense(3)(x2) 
 
 # concatenate 1. 사슬같이 잇다; 연쇄시키다/ merge:병합하다.
 from keras.layers.merge import concatenate
 merge1 = concatenate([middle1, middle2]) # merge1 == concatenate 된 layer
 
-output1 = Dense(30)(merge1)
-output1 = Dense(13)(output1)
-output1 = Dense(3)(output1)
+y1y2 = Dense(30)(merge1)
+y1y2 = Dense(13)(y1y2)
+y1y2 = Dense(6)(y1y2)
 
-output2 = Dense(15)(merge1)
-output2 = Dense(32)(output2)
-output2 = Dense(3)(output2)
-
-
-model = Model(inputs = [input1,input2], outputs = [output1,output2]) # 어디서부터 어디까지 model이라는 걸 선언
+model = Model(inputs = [input1,input2], outputs = y1y2) # 어디서부터 어디까지 model이라는 걸 선언
 model.summary() # 요약
 
-
+"""
 #3. 훈련
 model.compile(loss='mse', optimizer='adam', # metrics=['accuracy']) # loss=손실함수 optimizer=최적화
                 metrics=['mse']) # loss: 6.8923e-13, metrics->mse: 6.8923e-13
@@ -155,3 +153,4 @@ print("R2 : ", (r2_y1_predict + r2_y2_predict)/2)
 
 # R2 0.9999999999988425 RMSE 3.0902579776801397e-06
 # R2의 값을 늘렸더니 R2 0.9999999999992074 늘고 , RMSE의 값은 낮아졌다. RMSE 3.846355047163435e-06
+"""
