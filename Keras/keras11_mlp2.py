@@ -7,15 +7,15 @@ import numpy as np # numpy를 가져와 np로 지정해주겠다.
 # x = np.array(range(1, 101))
 # y = np.array(range(1, 101))
 x = np.array([range(1, 101), range(101, 201)]) # 2개의 calum 2개의 열을 만들려 했으나/ 2행 100열
-y = np.array([range(1, 101), range(101, 201)]) # 2개의 calum 2개의 열을 만들려 했으나/ 2행 100열
+y = np.array([range(201, 301)]) # 2개의 calum 2개의 열을 만들려 했으나/ 2행 100열
 # print(x)
 
-print(x.shape)
-
+print(x.shape) # (2,100) 
+ 
 x = np.transpose(x) # 100행 2열
 y = np.transpose(y) # 100행 2열 
 
-print(x.shape)
+print(x.shape) # (100,2)
 # 2개의 calum(열)을 만들어냈다.
 
 """
@@ -31,10 +31,10 @@ y_test = y[80:] # 81부터 100까지 자름
 
 from sklearn.model_selection import train_test_split
 x_train, x_test, y_train, y_test = train_test_split(
-    x, y, random_state=50, test_size=0.4, shuffle=False
+    x, y, random_state=33, test_size=0.4, shuffle=False
 ) # x 값을 x_train, x_test로 분류 y 값을 y_train, y_test로 분류
 x_val, x_test, y_val, y_test = train_test_split(
-    x_test, y_test, random_state=50, test_size=0.4, shuffle=False # val 20% test 20% train 60%
+    x_test, y_test, random_state=33, test_size=0.5, shuffle=False # val 20% test 20% train 60%
 ) # x_test 값을 x_val, x_test로 분류 y_test 값을 y_val, y_test로 분류
 # test를 40% 주겠다. train을 60%주겠다
 
@@ -45,7 +45,7 @@ x_val, x_test, y_val, y_test = train_test_split(
 # 고정 된 random_state 일 때, 프로그램 실행마다 똑같은 결과를 산출합니다
 # random_state을 설정하지 않으면 알고리즘을 실행할 때마다 다른 시드가 사용되며 다른 결과가 나옵니다. 
 # x = (1, 2, 3, 4, 5) random_state하면 -> x = (1, 3, 4, 2, 5) 즉 순서는 바껴도 1이 1나오는 결과는 똑같다.
-# y = (1, 2, 3, 4, 5) random_state하면 -> x = (1, 3, 4, 2, 5) 즉 순서는 바껴도 1이 1나오는 결과는 똑같다.
+# y = (1, 2, 3, 4, 5) random_state하면 -> y = (1, 3, 4, 2, 5) 즉 순서는 바껴도 1이 1나오는 결과는 똑같다.
 
 
 #2. 모델구성
@@ -57,9 +57,24 @@ model = Sequential() # 순차적으로~
 # model.add(Dense(40, input_dim=1, activation='relu')) # input_dim=1 1개를 받아서 Dense(5,) 5개를 출력
 model.add(Dense(5, input_shape=(2, ), activation='relu')) # input_shape=2 열 2개를 받아서 Dense(5,) 5개를 출력
 # shape(2, ) == (?, 2)/ 행은 모르겠고 열 2개를 사용하겠다./ 2차원이상 에서 input_shape를 사용한다.
-model.add(Dense(3))
-model.add(Dense(4))
-model.add(Dense(2)) # input= 2 output도 똑같이 2여야함
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(100))
+model.add(Dense(1)) # input= 2 output도 똑같이 2/ 그러나 y calum(열)이 1이니까 y=wx+b로 output은 1이다.
 
 # model.summary() # 요약
 
@@ -68,15 +83,22 @@ model.compile(loss='mse', optimizer='adam', # metrics=['accuracy']) # loss=손�
                 metrics=['mse']) # loss: 6.8923e-13, metrics->mse: 6.8923e-13
 # / 이 모듈에서 최소한으로 손실보겠다. accuracy 정확성
 # model.fit(x_train, y_train, epochs=500, batch_size=1) # fit == 트레이닝 100번 훈련 1,2,3,4,5를 한개씩(1) 잘라서 훈련
-model.fit(x_train, y_train, epochs=100, batch_size=1,
+model.fit(x_train, y_train, epochs=300, batch_size=1,
         validation_data=(x_val, y_val)) # validation_data=머신한테 니가 검증해가면서 학습하라는 뜻
 # batch_size란 sample데이터 중 한번에 네트워크에 넘겨주는 데이터의 수를 말한다.
 # 1:1 과외가 공부 잘되는 것 처럼 1억개 데이터이면 100만개씩 모아서 공부시키듯이
 
 #4. 평가 예측
 # mse = 평균 제곱 에러 오답에 가까울수록 큰 값이 나온다. 반대로 정답에 가까울수록 작은 값이 나온다.
-loss, acc = model.evaluate(x_test, y_test, batch_size=3) # evaluate함수에 x_test, y_test값을 넣으면 loss a[0], acc a[1] 값이 나온다.
+loss, acc = model.evaluate(x_test, y_test, batch_size=1) # evaluate함수에 x_test, y_test값을 넣으면 loss a[0], acc a[1] 값이 나온다.
 print("acc : ", acc)
+
+""" shape 왁꾸를 잘 맞춰야 한다.
+# aaa = np.array([[101,102,103],[201,202,203]]) # 2행 3열
+aaa = np.array([range(101, 104), range(201, 204)])
+aaa = np.transpose(aaa) # 3행 2열(3,2)
+y_predict = model.predict(aaa)
+"""
 
 y_predict = model.predict(x_test)
 print(y_predict)
